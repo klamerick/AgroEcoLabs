@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgroEcoLab</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Tela de Login (visível inicialmente) -->
+  <div id="login-screen">
+    <h2>AgroEcoLab</h2>
+    <p class="subtitle">Simulador de Fazenda Agroecológica</p>
+
+    <div class="input-group">
+      <input type="text" id="login-username" placeholder=" ">
+      <label for="login-username">Usuário</label>
+    </div>
+    <div class="input-group">
+      <input type="password" id="login-password" placeholder=" ">
+      <label for="login-password">Senha</label>
+    </div>
+    <button id="login-button">Entrar</button>
+
+    <hr>
+
+    <h3>Crie sua conta</h3>
+    <div class="input-group">
+      <input type="text" id="register-username" placeholder=" ">
+      <label for="register-username">Novo usuário</label>
+    </div>
+    <div class="input-group">
+      <input type="password" id="register-password" placeholder=" ">
+      <label for="register-password">Nova senha</label>
+    </div>
+    <button id="register-button">Cadastrar</button>
+  </div>
+
+  <!-- Simulador (oculto inicialmente) -->
+  <div id="simulator-container" style="display: none;">
+    <header>
+      <h1>🌱 Simulador de Fazenda Agroecológica</h1>
+      <div class="season-display">
+        <span id="current-season">Primavera</span>
+        <span>Dia: <span id="current-day">1</span></span>
+      </div>
+    </header>
+
+    <main>
+      <section class="game-container">
+        <div class="farm-container">
+          <div id="farm-grid"></div>
+        </div>
+
+        <div class="controls-panel">
+          <div class="mode-selector">
+            <button id="plant-mode" class="active">🌱 Plantar</button>
+            <button id="harvest-mode">✂️ Colher</button>
+          </div>
+
+          <div class="inventory-section">
+            <h3>📦 Inventário de Sementes</h3>
+            <div id="inventory-display"></div>
+          </div>
+
+          <div class="action-buttons">
+            <button id="water-button">💦 Regar</button>
+            <button id="compost-button">🍂 Compostar ($15)</button>
+            <button id="collect-rain-button">☔ Coletar Chuva</button>
+            <button id="open-shop-button">🛒 Mercado</button>
+            <button id="next-day-button">🌄 Próximo Dia</button>
+          </div>
+        </div>
+
+        <div class="status-panel">
+          <div class="status-item">
+            <span>💰 Dinheiro:</span>
+            <span id="money">1000.00</span>
+          </div>
+          <div class="status-item">
+            <span>🌱 Saúde do Solo:</span>
+            <div class="status-bar">
+              <div id="soil-health-bar" class="status-fill" style="width: 80%;"></div>
+            </div>
+          </div>
+          <div class="status-item">
+            <span>💧 Água:</span>
+            <div class="status-bar">
+              <div id="water-level-bar" class="status-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <div class="status-item">
+            <span>🦋 Biodiversidade:</span>
+            <div class="status-bar">
+              <div id="biodiversity-bar" class="status-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <div class="status-item">
+            <span>☀️ Painéis Solares:</span>
+            <span id="solar-panels">0</span>
+          </div>
+        </div>
+
+        <div class="animals-section">
+          <h3>🐄 Animais</h3>
+          <div id="animal-pen" class="animal-pen"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal da Loja -->
+    <div id="shop-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-shop">&times;</span>
+        <h2>🛒 Mercado Agroecológico</h2>
+        <div id="shop-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/farmSimulator.js"></script>
+  <script>
+    // Função para mostrar o simulador após o login
+    function showSimulator() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('simulator-container').style.display = 'block';
+
+      // Inicializa o simulador com os dados do usuário
+      const username = localStorage.getItem("lastUser") || "Fazendeiro";
+      const savedData = JSON.parse(localStorage.getItem(`farm_${username}`)) || null;
+      farmSimulator.init(savedData);
+    }
+
+    // Verifica se já está logado ao carregar a página
+    document.addEventListener("DOMContentLoaded", () => {
+      const lastUser = localStorage.getItem("lastUser");
+      if (lastUser) {
+        showSimulator();
+      } else {
+        // Configura os event listeners para login/registro
+        document.getElementById("login-button").addEventListener("click", () => {
+          handleLogin();
+          showSimulator();
+        });
+
+        document.getElementById("register-button").addEventListener("click", handleRegister);
+      }
+    });
+  </script>
+</body>
+
+</html>

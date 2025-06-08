@@ -1,0 +1,640 @@
+:root {
+  --primary: #386641;
+  --secondary: #6a994e;
+  --accent: #a7c957;
+  --light: #f2e8cf;
+  --dark: #1a1a1a;
+  --error: #bc4749;
+  --soil: #ddb892;
+  --soil-dark: #b08968;
+  --water: #4cc9f0;
+  --spring: #a8e6cf;
+  --summer: #f7d486;
+  --autumn: #e8a87c;
+  --winter: #d4f1f9;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9f2;
+  background-image:
+    url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,50 Q50,30 70,50 T90,50" fill="none" stroke="%23e8f5e9" stroke-width="0.5"/></svg>'),
+    linear-gradient(to bottom, #f8f9f2, #e8f5e9);
+  color: #333;
+  line-height: 1.6;
+}
+
+header {
+  background:
+    linear-gradient(135deg, var(--primary), var(--secondary)),
+    url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" fill="%233a7d44" fill-opacity="0.2"/></svg>');
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-bottom: 8px solid var(--accent);
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.season-display {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+main {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.farm-container {
+  background-color: #f8f9fa;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+#farm-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(50px, 1fr));
+  gap: 6px;
+  margin: 0 auto;
+  background-color: var(--soil);
+  background-image:
+    linear-gradient(to bottom, var(--soil), var(--soil-dark)),
+    url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 L60,30 M30,0 L30,60" stroke="%23b08968" stroke-width="1" stroke-dasharray="3,3"/></svg>');
+  border: 3px solid var(--soil-dark);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.farm-cell {
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  background-color: var(--soil);
+  border: 2px solid var(--soil-dark);
+  box-shadow:
+    inset 0 0 10px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.farm-cell:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent);
+}
+
+/* Plant Styles */
+.farm-cell.planted {
+  animation: plantPop 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.farm-cell.milho::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 40px;
+  background: linear-gradient(to bottom, #f1c453, #d4a017);
+  clip-path: polygon(50% 0%, 0% 100%, 20% 100%, 50% 30%, 80% 100%, 100% 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.farm-cell.feijao::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 35px;
+  background: linear-gradient(to bottom, #52b788, #2d6a4f);
+  clip-path: polygon(50% 0%, 0% 100%, 30% 100%, 50% 40%, 70% 100%, 100% 100%);
+}
+
+.farm-cell.alface::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 45px;
+  height: 30px;
+  background: linear-gradient(to bottom, #95d5b2, #40916c);
+  border-radius: 50% 50% 0 0;
+  box-shadow:
+    -10px 5px 0 0 #95d5b2,
+    10px 5px 0 0 #95d5b2,
+    -5px 10px 0 0 #40916c,
+    5px 10px 0 0 #40916c;
+}
+
+/* Growth Phases */
+.fase0 {
+  opacity: 0.6;
+  transform: scale(0.8);
+}
+
+.fase0::after {
+  height: 20px !important;
+  filter: brightness(0.8);
+}
+
+.fase1 {
+  opacity: 0.9;
+  filter: saturate(1.2);
+}
+
+.fase2 {
+  opacity: 1;
+  filter: brightness(1.1) saturate(1.5);
+}
+
+.fase3 {
+  animation: harvestGlow 2s infinite alternate;
+}
+
+@keyframes harvestGlow {
+  from {
+    filter: brightness(1.2) drop-shadow(0 0 4px rgba(255, 215, 0, 0.5));
+  }
+
+  to {
+    filter: brightness(1.4) drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+  }
+}
+
+@keyframes plantPop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Controls Panel */
+.controls-panel {
+  background-color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mode-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.mode-selector button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #e9ecef;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mode-selector button.active {
+  background-color: var(--accent);
+  color: white;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+button:hover {
+  background-color: var(--secondary);
+  transform: translateY(-2px);
+}
+
+/* Inventory */
+.inventory-section {
+  margin: 1rem 0;
+}
+
+#inventory-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.inventory-item {
+  background: #e9ecef;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.inventory-item.selected {
+  background: var(--accent);
+  color: white;
+}
+
+/* Status Panel */
+.status-panel {
+  background-color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.status-item {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-item span:first-child {
+  min-width: 120px;
+  font-weight: 500;
+}
+
+.status-bar {
+  flex: 1;
+  height: 20px;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.status-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--secondary), var(--accent));
+  transition: width 0.5s;
+}
+
+/* Animals Section */
+.animals-section {
+  background-color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.animal-pen {
+  min-height: 100px;
+  border: 2px dashed #b7b7a4;
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: #f8f4e9;
+  border-radius: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.animal {
+  width: 60px;
+  height: 60px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.animal.chicken {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,30 Q60,20 70,30 Q80,40 70,50 Q60,60 50,50 Q40,60 30,50 Q20,40 30,30 Q40,20 50,30" fill="%23FFD700" stroke="%23333" stroke-width="1.5"/><circle cx="40" cy="40" r="5" fill="%23333"/><path d="M60,40 Q70,35 75,40" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M35,65 Q45,75 50,70 Q55,75 65,65" fill="none" stroke="%23333" stroke-width="2"/><path d="M45,50 Q50,45 55,50" fill="none" stroke="%23333" stroke-width="1.5"/><path d="M50,35 L50,45" fill="none" stroke="%23333" stroke-width="1.5"/></svg>');
+}
+
+.animal.cow {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30,60 Q20,50 30,40 Q40,30 50,35 Q60,30 70,40 Q80,50 70,60 Q60,70 50,65 Q40,70 30,60" fill="%23665339" stroke="%23333" stroke-width="1.5"/><path d="M25,45 Q15,40 20,30 Q25,20 35,25" fill="%23665339" stroke="%23333" stroke-width="1.5"/><path d="M75,45 Q85,40 80,30 Q75,20 65,25" fill="%23665339" stroke="%23333" stroke-width="1.5"/><circle cx="30" cy="40" r="3" fill="%23333"/><circle cx="70" cy="40" r="3" fill="%23333"/><path d="M20,70 Q10,65 15,55" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M80,70 Q90,65 85,55" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M40,50 Q50,45 60,50" fill="none" stroke="%23f2e8cf" stroke-width="1.5"/><circle cx="35" cy="55" r="2" fill="%23333"/><circle cx="65" cy="55" r="2" fill="%23333"/></svg>');
+}
+
+/* Shop Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.shop-section {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.shop-item {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.item-name {
+  font-weight: 500;
+}
+
+.item-price {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.item-desc {
+  grid-column: span 2;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Notifications */
+.notification {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.notification.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-1rem);
+}
+
+/* Seasonal Effects */
+.spring-effect {
+  background-color: var(--spring);
+}
+
+.summer-effect {
+  background-color: var(--summer);
+}
+
+.autumn-effect {
+  background-color: var(--autumn);
+}
+
+.winter-effect {
+  background-color: var(--winter);
+}
+
+/* Estilos para a tela de login no mesmo arquivo */
+#login-screen {
+  max-width: 400px;
+  margin: 5rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M20,50 Q50,20 80,50 T80,50" fill="none" stroke="%23f2e8cf" stroke-width="1"/></svg>');
+}
+
+#login-screen h2 {
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+#login-screen hr {
+  border: none;
+  height: 1px;
+  background-color: #eee;
+  margin: 1.5rem 0;
+}
+
+#login-screen h3 {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+#login-screen input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+#login-screen input:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(167, 201, 87, 0.3);
+}
+
+#login-screen button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#login-screen button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-notification {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.login-notification.error {
+  background: linear-gradient(to right, #bc4749, #d62828);
+}
+
+.login-notification.success {
+  background: linear-gradient(to right, #386641, #6a994e);
+}
+
+.login-notification.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-1rem);
+}
+
+/* Animações para o login */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#login-screen {
+  animation: fadeIn 0.6s ease-out;
+}
+
+#login-screen input {
+  animation: fadeIn 0.8s ease-out;
+}
+
+#login-screen button {
+  animation: fadeIn 1s ease-out;
+}
+
+/* Efeito de foco nos inputs */
+.input-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  position: absolute;
+  left: 1rem;
+  top: 0.75rem;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus+label,
+.input-group input:not(:placeholder-shown)+label {
+  top: -0.5rem;
+  left: 0.8rem;
+  font-size: 0.8rem;
+  background: white;
+  padding: 0 0.2rem;
+  color: var(--primary);
+}
+
+/* Responsividade para login */
+@media (max-width: 480px) {
+  #login-screen {
+    margin: 2rem auto;
+    padding: 1.5rem;
+    width: 90%;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #farm-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .game-container {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 1rem;
+  }
+}
