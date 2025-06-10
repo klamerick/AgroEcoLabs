@@ -29,4 +29,21 @@ O AgroEcoLabs foi desenvolvido para facilitar o entendimento dos princípios da 
 
 ---
 
+## Desenvolvedor
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/klamerick">
+        <img src="https://avatars.githubusercontent.com/u/215322898?v=4" width="100px" style="border-radius: 50%;" alt="Foto de klamerick"/><br />
+        <sub><b>Klamerick</b></sub>
+      </a>
+      <br />
+      <a href="https://github.com/klamerick">GitHub</a>
+    </td>
+  </tr>
+</table>
+
+---
+
 Quer contribuir? Tem sugestões de novas funcionalidades ou encontrou algum problema? Abra uma issue ou envie seu pull request. Juntos podemos fortalecer a agroecologia através da tecnologia!
